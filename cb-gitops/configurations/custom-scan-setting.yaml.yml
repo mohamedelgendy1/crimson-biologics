@@ -1,0 +1,28 @@
+apiVersion: compliance.openshift.io/v1alpha1
+kind: ScanSetting
+metadata:
+  name: crimson-daily-scan
+  namespace: openshift-compliance
+  annotations:
+    argocd.argoproj.io/sync-wave: "4" # Applies before the Binding
+rawResultStorage:
+  enabled: true
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  pvAccessModes:
+  - ReadWriteOnce
+  rotation: 3
+  size: 1Gi
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+roles:
+- master
+- worker
+- infra # added infra nodes
+scanTolerations:
+- operator: Exists
+schedule: "0 1 * * *"
+showNotApplicable: false
+strictNodeScan: true
