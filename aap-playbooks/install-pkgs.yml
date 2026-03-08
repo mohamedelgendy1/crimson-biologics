@@ -1,0 +1,56 @@
+---
+- name: install packages on lab, preprod
+  hosts: lab, preprod
+  become: true
+
+  tasks:
+    - name: Install packages on lab and preprod
+      ansible.builtin.dnf:
+        name:
+          - php
+          - httpd
+        state: present
+
+#######################################
+
+- name: install packages on myprod
+  hosts: myprod
+  become: true
+
+  tasks:
+
+    - name: Install nginx 
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+
+    - name: Upgrade all packages
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: create group
+      ansible.builtin.group:
+        name: devops-wala
+        state: present
+
+    - name: Create User
+      ansibe.builtin.user:
+        name: rajan
+        comment: OCP cluster
+        uid: 1330
+        group: devops-wala
+        shell: /bin/bash
+        state: present
+        password: "{{ 'anishrana2001' | password_hash('sha512') }}"
+
+    - name: Create nologin User
+      ansible.builtin.user:
+        name: mon_ocp
+        shell: /usr/bin/nologin
+        state: present
+
+    - name: Install Package group
+      ansible.builtin.dnf:
+        name: '@RPM development Tool'
+        state: present

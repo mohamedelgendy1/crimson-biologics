@@ -1,0 +1,23 @@
+---
+- name: Configure YUM Repo
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Custom REPO
+      ansible.builtin.yum_repository:
+        name: Red Hat Enterprise Linux 9 for x86_64 - BaseOS (RPMs)
+        description: rhel-9-for-x86_64-baseos
+        baseurl: http://content.example.com/rhel9.0/x86_64/dvd/BaseOS
+        enabled: true
+        gpgcheck: true
+        gpgkey: http://content.example.com/rhel9.0/x86_64
+
+    - name: Custom REPO
+      ansible.builtin.yum_repository:
+        name: Red Hat Enterprise Linux 9 for x86_64 - AppStream (RPMs)
+        description: rhel-9-for-x86_64-AppStream
+        baseurl: http://content.example.com/rhel9.0/x86_64/dvd/AppStream
+        enabled: true
+        gpgcheck: true
+        gpgkey: ""
