@@ -1,0 +1,33 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: "{{ project_name }}"
+  annotations:
+    openshift.io/description: "Developer Project for {{ developer_username }}"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edit-access
+  namespace: "{{ project_name }}"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "{{ developer_username }}"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: project-quota
+  namespace: "{{ project_name }}"
+spec:
+  hard:
+    requests.cpu: "{{ cpu_request | default('1') }}"
+    requests.memory: "{{ mem_request | default('1Gi') }}"
+    limits.cpu: "{{ cpu_limit | default('2') }}"
+    limits.memory: "{{ mem_limit | default('2Gi') }}"
