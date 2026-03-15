@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,6 +15,6 @@ spec:
     spec:
       containers:
       - name: httpd
-        image: docker.io/httpd:latest # You can use a specific image version if needed
+        image: podman pull quay.io/fedora/httpd-24
         ports:
         - containerPort: 8080
