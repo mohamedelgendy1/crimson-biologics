@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: httpd-service
+  namespace: httpd-test
+spec:
+  selector:
+    app: httpd-app
+  ports:
+    - protocol: TCP
+      port: 80 # The port the service will be accessible on internally
+      targetPort: 8080 # The container port the traffic will be forwarded to
