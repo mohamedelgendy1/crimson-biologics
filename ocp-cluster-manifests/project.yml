@@ -1,6 +1,0 @@
-apiVersion: project.openshift.io/v1
-kind: Project
-metadata:
-  name: httpd-test
-  labels:
-    project: httpd-test
