@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: httpd
-        image: podman pull quay.io/fedora/httpd-24
+        image: quay.io/fedora/httpd-24
         ports:
         - containerPort: 8080
