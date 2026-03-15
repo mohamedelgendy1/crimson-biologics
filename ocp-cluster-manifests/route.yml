@@ -8,5 +8,5 @@ spec:
     kind: Service
     name: httpd-service
   port:
-    targetPort: 80
+    targetPort: 8080
     
