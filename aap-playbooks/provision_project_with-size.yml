@@ -8,7 +8,7 @@
     developer_username: "default-user"
     project_size: "small" 
     
-    git_repo_url: "https://{{ git_username }}:{{ git_token }}@github.com/your-org/openshift-tenant-configs.git"
+    git_repo_url: "https://github.com/mohamedelgendy1/crimson-biologics.git"
     clone_dir: "/tmp/openshift-tenant-configs"
 
     # THE GUARDRAILS: Define the exact sizes allowed
@@ -45,13 +45,13 @@
 
     - name: Template Kubernetes resources into Git repo
       ansible.builtin.template:
-        src: templates/tenant-project.yml.j2
+        src: aap-playbooks/templates/project_template.yaml.j2
         dest: "{{ clone_dir }}/projects/{{ project_name }}.yaml"
 
     - name: Commit and push changes to Git
       ansible.builtin.shell: |
         git config user.name "AAP Automation"
-        git config user.email "aap@yourorg.com"
+        git config user.email "aap@crimson-bio.com"
         git add projects/{{ project_name }}.yaml
         # Notice we updated the commit message to include the size!
         git commit -m "Provision OpenShift project: {{ project_name }} (Size: {{ project_size }}) for {{ developer_username }}"
