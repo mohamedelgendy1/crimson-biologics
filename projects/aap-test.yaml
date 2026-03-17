@@ -1,0 +1,33 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: "aap-test"
+  annotations:
+    openshift.io/description: "Developer Project for gendy"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edit-access
+  namespace: "aap-test"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "gendy"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: project-quota
+  namespace: "aap-test"
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: "1Gi"
+    limits.cpu: "2"
+    limits.memory: "2Gi"
