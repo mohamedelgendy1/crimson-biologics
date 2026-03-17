@@ -8,7 +8,7 @@
     developer_username: "default-user"
     project_size: "small" 
     
-    git_repo_url: "https://github.com/mohamedelgendy1/crimson-biologics.git"
+    git_repo_url: "https://{{ git_username }}:{{ git_token }}@github.com/mohamedelgendy1/crimson-biologics.git"
     clone_dir: "/tmp/openshift-tenant-configs"
 
     # THE GUARDRAILS: Define the exact sizes allowed
@@ -63,3 +63,5 @@
         git push origin main
       args:
         chdir: "{{ clone_dir }}"
+      environment:
+        GIT_TERMINAL_PROMPT: "0"
