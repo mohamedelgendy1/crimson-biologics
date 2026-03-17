@@ -1,0 +1,37 @@
+---
+- name: Generate and Push OpenShift Project Manifests to Git
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # These will ideally be overridden by an AAP Survey
+    project_name: "default-dev-project"
+    developer_username: "default-user"
+    git_repo_url: "https://{{ git_username }}:{{ git_token }}@github.com/your-org/openshift-tenant-configs.git"
+    clone_dir: "/tmp/openshift-tenant-configs"
+
+  tasks:
+    - name: Ensure clean workspace
+      ansible.builtin.file:
+        path: "{{ clone_dir }}"
+        state: absent
+
+    - name: Clone the GitOps repository
+      ansible.builtin.git:
+        repo: "{{ git_repo_url }}"
+        dest: "{{ clone_dir }}"
+        version: main
+
+    - name: Template Kubernetes resources into Git repo
+      ansible.builtin.template:
+        src: templates/tenant-project.yml.j2
+        dest: "{{ clone_dir }}/projects/{{ project_name }}.yaml"
+
+    - name: Commit and push changes to Git
+      ansible.builtin.shell: |
+        git config user.name "AAP Automation"
+        git config user.email "aap@yourorg.com"
+        git add projects/{{ project_name }}.yaml
+        git commit -m "Provision OpenShift project: {{ project_name }} for {{ developer_username }}"
+        git push origin main
+      args:
+        chdir: "{{ clone_dir }}"
