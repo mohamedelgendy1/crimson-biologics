@@ -43,6 +43,11 @@
         dest: "{{ clone_dir }}"
         version: main
 
+    - name: Ensure projects directory exists in the cloned repo
+      ansible.builtin.file:
+        path: "{{ clone_dir }}/projects"
+        state: directory
+
     - name: Template Kubernetes resources into Git repo
       ansible.builtin.template:
         src: tenant-project.yml.j2
