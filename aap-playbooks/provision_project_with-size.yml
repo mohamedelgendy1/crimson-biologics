@@ -45,7 +45,7 @@
 
     - name: Template Kubernetes resources into Git repo
       ansible.builtin.template:
-        src: templates/project_template.yaml.j2
+        src: project_template.yaml.j2
         dest: "{{ clone_dir }}/projects/{{ project_name }}.yaml"
 
     - name: Commit and push changes to Git
