@@ -1,0 +1,212 @@
+ssh-keygen -t ed25519 -C "your_comment" -f ./ssh-keys
+ll
+clear
+ll
+tar -xvf openshift-install-linux.tar.gz
+ll
+rm openshift-client-linux-amd64-rhel9.tar.gz
+tar xvf openshift-client-linux-amd64-rhel9-4.21.2.tar.gz
+echo $PATH
+which oc
+rm /usr/bin/oc
+sudo rm /usr/bin/oc
+mv oc /usr/bin/
+sudo mv oc /usr/bin/
+which oc
+oc --help
+clear
+ll
+mv ssh-keys openshift-local-key
+mv ssh-keys.pub openshift-key.pub
+mv openshift-local-key openshift-key
+clear
+ll
+eval "$(ssh-agent -s)"
+cp openshift-key /home/mhassan/.ssh/
+ll /home/mhassan/.ssh/
+clear
+ssh-add ./openshift-key
+ll
+mkdir installation
+./openshift-install create cluster --dir installation/ --log-level=info
+cp openshift-key.pub /home/mhassan/.ssh/
+./openshift-install create cluster --dir installation/ --log-level=info
+ll
+cd installation/
+ll
+ll auth/
+cat auth/kubeadmin-password
+cat auth/kubeconfig
+ll
+export KUBECONFIG=./auth/kubeconfig
+oc whoami
+oc get nodes
+clear
+oc explain build.config.openshift.io
+oc explain build.config.openshift
+cd
+oc whoami
+cd Documents/faster-final-project/
+oc whoami
+cd installation/
+oc whoami
+clear
+oc get machineset -n openshift-machine-api
+oc get machineset crimson-biologics-45gn8-worker-us-east-1a -n openshift-machine-api -o yaml > infra-us-east-1a.yaml
+oc get machineset crimson-biologics-45gn8-worker-us-east-1b -n openshift-machine-api -o yaml > infra-us-east-1b.yaml
+oc get machineset crimson-biologics-45gn8-worker-us-east-1f -n openshift-machine-api -o yaml > infra-us-east-1f.yaml
+ll
+oc get routes.route.openshift.io -n openshift-console
+oc get nodes
+oc get machineset -n openshift-machine-api
+oc apply -f infra-us-east-1a.yaml
+oc get nodes
+watch oc get nodes
+oc get machines -n openshift-machine-api
+oc get nodes
+watch oc get nodes
+oc get nodes -o wide
+oc describe node ip-10-0-1-186.ec2.internal | grep -i taint
+oc get nodes
+oc describe ip-10-0-1-186.ec2.internal
+oc describe node/ip-10-0-1-186.ec2.internal
+oc label node ip-10-0-1-186.ec2.internal node-role.kubernetes.io/infra=""
+oc label node ip-10-0-1-186.ec2.internal node-role.kubernetes.io/worker-
+oc get nodes
+oc apply -f infra-us-east-1b.yaml
+watch oc get machine -n openshift-machine-api
+oc whoami
+oc apply -f infra-us-east-1f.yaml
+watch oc get machine -n openshift-machine-api
+watch oc get nodes
+oc get nodes
+oc label node ip-10-0-152-122.ec2.internal node-role.kubernetes.io/infra=""
+oc label node ip-10-0-152-122.ec2.internal node-role.kubernetes.io/worker-
+oc get nodes
+oc label node ip-10-0-39-124.ec2.internal node-role.kubernetes.io/infra=""
+oc label node ip-10-0-39-124.ec2.internal node-role.kubernetes.io/worker-
+oc get nodes
+clear
+oc get ingresscontrollers.operator.openshift.io
+oc get ingresscontrollers.operator.openshift.io -n openshift-ingress-operator
+oc project openshift-ingress-operator
+oc patch ingresscontroller/default -n openshift-ingress-operator --type=merge -p '{
+  "spec": {
+    "replicas": 3,
+    "nodePlacement": {
+      "nodeSelector": {
+        "matchLabels": {
+          "node-role.kubernetes.io/infra": ""
+        }
+      },
+      "tolerations": [
+        {
+          "effect": "NoSchedule",
+          "key": "node-role.kubernetes.io/infra",
+          "operator": "Exists"
+        }
+      ]
+    }
+  }
+}'
+watch oc get pods
+watch oc get pods -o wide
+oc get pods
+oc get pods -n openshift-ingress -o wide
+oc get nodes
+htpasswd -c -B -b users.htpasswd hassan hassan@123
+htpasswd -B -b users.htpasswd gendy gendy@123
+htpasswd -B -b users.htpasswd mahmoud mahmoud@123
+htpasswd -B -b users.htpasswd hind hind@123
+oc create secret generic htpass-secret --from-file=htpasswd=users.htpasswd -n openshift-config
+oc patch oauth cluster --type=merge -p '{
+  "spec": {
+    "identityProviders": [
+      {
+        "name": "htpasswd-provider",
+        "mappingMethod": "claim",
+        "type": "HTPasswd",
+        "htpasswd": {
+          "fileData": {
+            "name": "htpass-secret"
+          }
+        }
+      }
+    ]
+  }
+}'
+oc adm policy add-cluster-role-to-user cluster-admin hassan
+oc adm policy add-cluster-role-to-user cluster-admin gendy
+oc adm policy add-cluster-role-to-user cluster-admin mahmoud
+oc adm policy add-cluster-role-to-user cluster-admin hind
+oc get usrs
+oc get users
+oc get users -n openshift-config
+oc get users -n openshift-authentication
+oc get users -n default
+oc login -u hassan -p hassan@123
+oc get nodes
+oc project openshift-config
+oc get authentications.config.openshift.io
+oc edit authentications.config.openshift.io cluster
+oc get oauth
+oc describe oauth cluster
+oc edit oauth cluster
+history
+oc edit oauth cluster
+oc get pods
+oc edit oauth cluster
+oc whoami
+oc login -u kubeadmin -p h5nf8-cFF9x-s9U9c-L7oXy
+oc adm groups new ocp-admins hassan gendy mahmoud hind
+oc get group
+oc get group ocp-admins
+oc adm policy add-cluster-role-to-group cluster-admin ocp-admins
+oc adm policy remove-cluster-role-from-user cluster-admin hassan
+oc adm policy remove-cluster-role-from-user cluster-admin gendy
+oc adm policy remove-cluster-role-from-user cluster-admin mahmoud
+oc adm policy remove-cluster-role-from-user cluster-admin hind
+oc login -u hassan -p hassan@123
+oc get nodes
+oc get clusteroperators
+oc describe secrets htpass-secret
+oc edit secrets htpass-secret
+oc delete secret kubeadmin -n kube-system
+oc patch oauth cluster --type=json -p '[{
+  "op": "replace", 
+  "path": "/spec/identityProviders", 
+  "value": [{
+    "name": "htpasswd",
+    "mappingMethod": "claim",
+    "type": "HTPasswd",
+    "htpasswd": {
+      "fileData": {
+        "name": "htpass-secret"
+      }
+    }
+  }]
+}]'
+oc get clusteroperator authentication
+ll
+oc apply -f cluster-autoscaler.yaml
+touch machine-autoscalers.yaml
+oc get machinesets.machine.openshift.io
+oc get machinesets.machine.openshift.io -n default
+oc get machinesets.machine.openshift.io -n openshift-machine-api
+oc apply -f machine-autoscalers.yaml
+oc get machineautoscaler -n openshift-machine-api
+oc new-project autoscaler-demo
+oc new-project autoscaler-demo
+oc create deployment load-test --image=nginx
+oc set resources deployment load-test --requests=cpu=2000m
+oc scale deployment load-test --replicas=15
+oc get pods
+watch oc get pods
+oc get machines -n openshift-machine-api
+watch oc get machines -n openshift-machine-api
+oc get pods
+oc gte nodes
+oc get nodes
+watch oc get nodes
+watch oc get pods
+oc delete project autoscaler-demo

@@ -1,0 +1,9 @@
+1-installing a cluster on AWS
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/installing_on_aws/installer-provisioned-infrastructure#installing-aws-default
+
+
+2-Autoscalers
+https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/machine_management/applying-autoscaling#cluster-autoscaler-about_applying-autoscaling
+
+
+3-

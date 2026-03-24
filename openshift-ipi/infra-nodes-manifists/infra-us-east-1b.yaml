@@ -1,0 +1,81 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  annotations:
+    capacity.cluster-autoscaler.kubernetes.io/labels: kubernetes.io/arch=amd64
+    machine.openshift.io/GPU: "0"
+    machine.openshift.io/memoryMb: "16384"
+    machine.openshift.io/vCPU: "4"
+  creationTimestamp: "2026-02-20T21:56:48Z"
+  generation: 1
+  labels:
+    machine.openshift.io/cluster-api-cluster: crimson-biologics-45gn8
+  name: crimson-biologics-45gn8-infra-us-east-1b
+  namespace: openshift-machine-api
+  resourceVersion: "16167"
+  uid: 500c3d23-2209-494e-8665-c4c9abf402a1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: crimson-biologics-45gn8
+      machine.openshift.io/cluster-api-machineset: crimson-biologics-45gn8-infra-us-east-1b
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: crimson-biologics-45gn8
+        machine.openshift.io/cluster-api-machine-role: infra
+        machine.openshift.io/cluster-api-machine-type: infra
+        machine.openshift.io/cluster-api-machineset: crimson-biologics-45gn8-infra-us-east-1b
+        node-role.kubernetes.io/infra: ""
+    spec:
+      lifecycleHooks: {}
+      metadata: {}
+      providerSpec:
+        value:
+          ami:
+            id: ami-04018496b0a1da2d2
+          apiVersion: machine.openshift.io/v1beta1
+          blockDevices:
+          - ebs:
+              encrypted: true
+              iops: 0
+              kmsKey:
+                arn: ""
+              volumeSize: 120
+              volumeType: gp3
+          capacityReservationId: ""
+          credentialsSecret:
+            name: aws-cloud-credentials
+          deviceIndex: 0
+          iamInstanceProfile:
+            id: crimson-biologics-45gn8-worker-profile
+          instanceType: m6i.xlarge
+          kind: AWSMachineProviderConfig
+          metadata: {}
+          metadataServiceOptions: {}
+          placement:
+            availabilityZone: us-east-1b
+            region: us-east-1
+          securityGroups:
+          - filters:
+            - name: tag:Name
+              values:
+              - crimson-biologics-45gn8-node
+          - filters:
+            - name: tag:Name
+              values:
+              - crimson-biologics-45gn8-lb
+          subnet:
+            filters:
+            - name: tag:Name
+              values:
+              - crimson-biologics-45gn8-subnet-private-us-east-1b
+          tags:
+          - name: kubernetes.io/cluster/crimson-biologics-45gn8
+            value: owned
+          userDataSecret:
+            name: worker-user-data
+      taints:
+        - key: node-role.kubernetes.io/infra
+          effect: NoSchedule
