@@ -1,0 +1,33 @@
+---
+apiVersion: project.openshift.io/v1
+kind: Project
+metadata:
+  name: "test-project-000"
+  annotations:
+    openshift.io/description: "Developer Project for developer"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: edit-access
+  namespace: "test-project-000"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: "developer"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: project-quota
+  namespace: "test-project-000"
+spec:
+  hard:
+    requests.cpu: "2"
+    requests.memory: "2Gi"
+    limits.cpu: "4"
+    limits.memory: "8Gi"
