@@ -4,6 +4,3 @@ https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/
 
 2-Autoscalers
 https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/machine_management/applying-autoscaling#cluster-autoscaler-about_applying-autoscaling
-
-
-3-
