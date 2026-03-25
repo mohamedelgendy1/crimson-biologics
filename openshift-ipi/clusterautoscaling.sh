@@ -15,7 +15,7 @@ function print_step() {
 
 # Helper function to format explanatory text
 function print_info() {
-    echo -e "  ${CYAN}ℹ $1${NC}"
+    echo -e "  ${CYAN} $1${NC}"
     sleep 2 # A slightly longer pause so the audience can read the explanation
 }
 
